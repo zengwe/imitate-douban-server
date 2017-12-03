@@ -1,0 +1,199 @@
+DROP TABLE IF EXISTS z_movie;
+create table z_movie (
+	id int(10) unsigned not null auto_increment comment '',
+	name varchar(100) not null default '' comment '电影名称',
+    	origin_name varchar(100) default '' comment '电影的其他名称',
+    	poster varchar(100) not null default '' comment '电影海报的地址',
+    	from_where int(10) unsigned default 0 comment '电影来自那个国家',
+    	brief varchar(255) not null default '' comment '电影简介',
+	film_length int(10) unsigned default 0 comment '电影时长',
+	film_length2 int(10) unsigned default 0 comment '剪切板时长',
+    	language varchar(255) not null default '' comment '电影的语言',
+    	prevue varchar(255) default '' comment '电影宣传片的位置',
+	publish_time int(10) unsigned default 0 comment '发行时间',
+	publish_country int(10) unsigned default 0 comment '发行于那个国家',
+	created_time int(10) unsigned default 0 comment '数据库中的创建时间',
+	updated_time int(10) unsigned default 0 comment '修改时间',
+	primary key (id)
+) engine = InnoDB default charset = utf8 comment '电影表';
+
+DROP TABLE IF EXISTS z_movie_actor_relations;
+create table z_movie_actor_relations(
+	id int(10) unsigned not null auto_increment comment '',
+	movie_id int(10) unsigned not null default 0 comment 'movie.id',
+	actor_id int(10) unsigned not null default 0 comment 'actor.id',
+	role_name varchar(100) default 0 comment '角色名称',
+	type tinyint(2) unsigned not null default 0 comment '0导演1副导演255演员',
+	create_time int(10) unsigned default 0 comment '',
+	update_time int(10) unsigned default 0 comment '',
+	primary key(id)
+)engine = InnoDB default charset = utf8 comment '电影和演员的中间表';
+
+DROP TABLE IF EXISTS z_movie_image_relations;
+create table z_movie_image_relations(
+	id int(10) unsigned not null default 0 auto_increment comment '',
+	movie_id int(10) unsigned not null default 0 comment 'movie.id',
+	image_id int(10) unsigned not null default 0 comment 'movie_image.id',
+	create_time int(10) unsigned not null default 0 comment '',
+	update_time int(10) unsigned not null default 0 comment '',
+	primary key(id)
+)engine = InnoDB default charset = utf8 comment '电影和电影图片中间表';
+
+DROP TABLE IF EXISTS z_movie_image;
+create table z_movie_image(
+	id in(10) unsigned not null default 0 auto_increment comment '',
+	path varchar(255) not null default '' comment '',
+	descrip varchar(255) default '' comment '',
+	status tinyint(1) unsigned default 0 comment '可见',
+	create_time int(10) unsigned default 0 comment '',
+	update_time int(10) unsigned default 0 comment '',
+	primary key(id)
+)engine = InnoDB default charset = utf8 comment '电影图';
+DROP TABLE IF EXISTS z_movie_image_comment;
+create table z_movie_image_comment(
+	id int(10) unsigned not null default 0 auto_increment comment '',
+	comment varchar(255) not null default 0 comment '评论',
+	user_id int(10) unsigned not null default 0 comment 'user.id',
+	status tinyint(1) unsigned not null default 0 comment '0可见1不可见',
+	descrip varchar(255) default '' comment '',
+	update_user_id int(10) unsigned default 0 comment '',
+	create_time int(10) unsigned not null default 0 comment '',
+	update_time int(10) unsigned not null default 0 comment '',
+	primary key(id)
+)engine = InnoDB default charset = utf8 comment '电影图片的评论';
+DROP TABLE IF EXISTS z_country;
+create table z_country (
+	id int(10) unsigned not null auto_increment comment '',
+	name varchar(100) not null default '' comment '国家的名称',
+	ch_name varchar(100) default '' comment '中文名称',
+	en_name varchar(100) default '' comment '英文名称',
+	main_language varchar(100) default 'english' comment '官方语言',
+	seconde_language varchar(100) default '' comment '其他语言',
+	continent tinyint default 0 comment '0未知，1亚洲，2欧洲，3非洲，4北美洲，5南美洲，6大洋州，7南极，8洲太平洋，9大西洋，10印度洋，11北冰洋',
+	capital varchar(100) default '未知' comment '首都',
+	created_time int(10) unsigned default 0 comment '数据库中的创建时间',
+	updated_time int(10) unsigned default 0 comment '修改时间',
+	primary key (id)
+) engine = InnoDB default charset = utf8 comment '国家表';
+
+
+DROP TABLE IF EXISTS z_category;
+create table z_category (
+	id int(10) unsigned not null auto_increment comment '',
+	name varchar(20) not null default '' comment '种类名称',
+	type tinyint(4) not null default 0 comment '0电影',
+	index_num int(10) unsigned default 0 comment '排序',
+	visible tinyint(1) default 0 comment '0显示，1不显示', 
+	created_time int(10) unsigned default 0 comment '数据库中的创建时间',
+	updated_time int(10) unsigned default 0 comment '修改时间',
+	primary key (id)
+) engine = InnoDB default charset = utf8 comment '种类表';
+
+drop table if exists z_actor;
+create table z_actor (
+	id int(10) unsigned not null auto_increment comment '',
+	name varchar(100) not null default '' comment '演员名称',
+	header varchar(100) not null default '' comment '演员的头像',
+	other_name varchar(255) default '' comment '演员的其他名称',
+	nick_name varchar(100) default '' comment '昵称',
+	profession tinyint(4) not null default 0 comment '0:演员1：导演',
+	brief text comment '演员简介',
+	family text comment '家庭成员',
+	gender tinyint(2) unsigned not null default 0 comment '性别0：未知1男2女',
+	birthday int(10) default 0 comment '生日',
+	height DOUBLE default 0.0 comment '身高',
+	birth_address varchar(255) default '' comment '出生地',
+	constellation tinyint(4) unsigned default 0 comment '0:未知',
+	create_time int(10) unsigned default 0 comment '',
+	update_time int(10) unsigned default 0 comment '',
+	primary key(id)
+)engine = InnoDB default charset = utf8 comment '演员表';
+
+DROP TABLE IF EXISTS z_actor_relation;
+create table z_actor_relation(
+	id int(10) unsigned not null default 0 comment '',
+	role_id int(10) unsigned not null default 0 comment '',
+	other_role_id int(10) unsigned not null default 0 comment '',
+	relationship tinyint(4)  unsigned not null default 0 comment '关系0好友1情侣2夫妻3父子255'
+	descip varchar(100) not null default '' comment 'relationship:255的描述',
+	create_time int(10) unsigned  default 0 comment '',
+	update_time int(10) unsigned default 0 comment '',
+	primary key(id)
+)engine = InnoDB default charset = utf8 comment 'relations of actor';
+
+DROP TABLE IF EXISTS z_movie_comment;
+create table z_movie_comment(
+	id int(10) unsigned not null default 0 comment '',
+	comment varchar(1000) not null default 0 comment '',
+	target_id int(10) unsigned not null default 0 comment '',
+	user_id int(10) unsigned not null default 0 comment '',
+	status tinyint(1) unsigned default 0 comment '0:visible1hidden',
+	create_time int(10) unsigned not null default 0 comment '',
+	update_time int(10) unsigned not null default 0 comment '',
+	primary key(id)
+)engine = InnoDB default charset = utf8 comment 'movie comment table';
+
+drop table if exists z_movie_review;
+create table z_movie_review(
+	id int(10) unsigned not null default 0 auto_increment comment '',
+	target_id int(10) unsigned not null default 0 comment '',
+	brief varchar(255) not null default '' comment '',
+	content text not null comment '',
+	core tinyint(4) unsigned not null default 0 comment '',
+	helpful int(10) unsigned default 0 comment '',
+	unhelpful int(10) unsigned default 0 comment '',
+	spoiler tinyint(1) default 0 comment '0没有剧透1有',
+	user_id int(10) unsigned not null default 0 comment '',
+	status tinyint(1) unsigned default 0 comment '0:visible1hidden',
+	create_time int(10) unsigned not null default 0 comment '',
+	update_time int(10) unsigned not null default 0 comment '',
+	primary key(id)
+)engine = InnoDB default charset = utf8 comment '影评表';
+
+drop table if exists z_movie_review_comment;
+create table z_movie_review_comment(
+	id int(10) unsigned not null default 0 auto_increment comment '',
+	target_id int(10) unsigned not null default 0 comment '',
+	parent_id int(10) unsigned default 0 comment 'self.id',
+	comment varchar(255) not null default 0 comment '',
+	status tinyint(1) unsigned default 0 comment '0:visibel1:hidden',
+	user_id int(10) unsigned not null default 0 comment '',
+	create_time int(10) unsigned not null default 0 comment '',
+	update_time int(10) unsigned not null default 0 comment '',
+	primary key(id)
+)engine = InnoDB default charset = utf8 comment '影评的评论表';
+
+//讨论表 问题表
+drop table if exists z_award;
+create table z_award(
+	id int(10) unsigned not null default 0 auto_increment comment '',
+	name varchar(100) not null default '' comment '奖项名称',
+	en_name varchar(100) not null default '' comment '英文名称',
+	area varchar(100) not null default '' comment '',
+	icon varchar(100) default '' comment '官方logo',
+	create_time int(10) unsigned not null default 0 comment '',
+	update_time int(10) unsigned not null default 0 comment '',
+	primary key(id)
+) engine = InnoDB default charset = utf8 comment '';
+
+drop table if exists z_movie_award
+
+//可能用到的
+CREATE TABLE `Test` (
+          `ID` int(11) NOT NULL AUTO_INCREMENT,
+          `NAME` varchar(50) NOT NULL,   
+          `SEX` varchar(2) NOT NULL,
+          PRIMARY KEY (`ID`)            
+        ) ENGINE=MEMORY AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC
+
+
+
+
+
+
+
+
+
+
+
+
