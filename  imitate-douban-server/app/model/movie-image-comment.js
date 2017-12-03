@@ -1,7 +1,7 @@
 'use strict';
 module.exports = app => {
   const { INTEGER, STRING } = app.Sequelize;
-  const MovieImageComment = app.module.define('MovieImageComment', {
+  const MovieImageComment = app.model.define('MovieImageComment', {
     id: {
       type: INTEGER.UNSIGNED,
       primaryKey: true,
